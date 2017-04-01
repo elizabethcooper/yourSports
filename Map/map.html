@@ -75,16 +75,47 @@
               function(snapshot) {
 
                   // Get that click from firebase.
-                  var newPosition = snapshot.val();
-                  var point = new google.maps.LatLng(newPosition.lat, newPosition.lng);
-                  var elapsed = new Date().getTime() - newPosition.timestamp;
+                  var data = snapshot.val();
+                  var point = new google.maps.LatLng(data.lat, data.lng);
+                  var elapsed = new Date().getTime() - data.timestamp;
 
                   // Add the point to  the heatmap.
-                  var marker = new google.maps.Marker({
-                      position: point,
-                      map: map,
-                      label: newPosition.name
-                  });
+                  if (data.name == "soccer") {
+                      var marker = new google.maps.Marker({
+                          position: data,
+                          map: map,
+                          icon: 'soccer.png',
+                          label: data.name,
+                      });
+                  } else if (data.name == "basketball") {
+                      var marker = new google.maps.Marker({
+                          position: data,
+                          map: map,
+                          icon: 'basketball.png',
+                          label: data.name,
+                      });
+                  } else if (data.name == "football") {
+                      var marker = new google.maps.Marker({
+                          position: data,
+                          map: map,
+                          icon: 'football.png',
+                          label: data.name,
+                      });
+                  } else if (data.name == "frisbee") {
+                      var marker = new google.maps.Marker({
+                          position: data,
+                          map: map,
+                          icon: 'frisbee.png',
+                          label: data.name,
+                      });
+                  } else {
+                      var marker = new google.maps.Marker({
+                          position: data,
+                          map: map,
+                          icon: 'satan.jpg',
+                          label: data.name,
+                      });
+                  }
 
                   // Requests entries older than expiry time (10 minutes).
                   var expirySeconds = Math.max(60 * 10 * 1000 - elapsed, 0);
@@ -128,11 +159,42 @@
           data.lng = e.latLng.lng();
           data.name = prompt('Enter name of activity:');
           addToFirebase(data);
-            var marker = new google.maps.Marker({
-              position: data,
-              map: map,
-                label: data.name,
-            });
+          if (data.name == "soccer") {
+              var marker = new google.maps.Marker({
+                  position: data,
+                  map: map,
+                  icon: 'soccer.png',
+                  label: data.name,
+              });
+          } else if (data.name == "basketball") {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'basketball.png',
+                    label: data.name,
+                });
+          } else if (data.name == "football") {
+              var marker = new google.maps.Marker({
+                  position: data,
+                  map: map,
+                  icon: 'football.png',
+                  label: data.name,
+              });
+          } else if (data.name == "frisbee") {
+              var marker = new google.maps.Marker({
+                  position: data,
+                  map: map,
+                  icon: 'frisbee.png',
+                  label: data.name,
+              });
+          } else {
+              var marker = new google.maps.Marker({
+                  position: data,
+                  map: map,
+                  icon: 'satan.jpg',
+                  label: data.name,
+              });
+          }
         });
 
       }
