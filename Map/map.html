@@ -9,7 +9,7 @@
         }
         /* Optional: Makes the sample page fill the window. */
         html, body {
-            height: 100%;
+            height: 95%;
             margin: 0;
             padding: 0;
         }
@@ -17,6 +17,15 @@
 </head>
 <body>
 <div id="map"></div>
+
+<select id="type" onchange="filterMarkers(this.value);">
+    <option value="all">Please select category</option>
+    <option value="soccer">soccer</option>
+    <option value="basketball">basketball</option>
+    <option value="football">football</option>
+    <option value="frisbee">frisbee</option>
+    <option value="other">other</option>
+</select>
 
 <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
 <script>
@@ -35,6 +44,8 @@
         lat: null,
         lng: null
     };
+
+    markers = [];
 
     /**
      * Starting point for running the program. Authenticates the user.
@@ -85,6 +96,7 @@
                         icon: '../Assets/soccer.png',
                         label: data.name,
                     });
+                    markers.push(marker);
                 } else if (data.name == "basketball") {
                     var marker = new google.maps.Marker({
                         position: data,
@@ -92,6 +104,7 @@
                         icon: '../Assets/basketball.png',
                         label: data.name,
                     });
+                    markers.push(marker);
                 } else if (data.name == "football") {
                     var marker = new google.maps.Marker({
                         position: data,
@@ -99,6 +112,7 @@
                         icon: '../Assets/football.png',
                         label: data.name,
                     });
+                    markers.push(marker);
                 } else if (data.name == "frisbee") {
                     var marker = new google.maps.Marker({
                         position: data,
@@ -106,6 +120,7 @@
                         icon: '../Assets/frisbee.png',
                         label: data.name,
                     });
+                    markers.push(marker);
                 } else {
                     var marker = new google.maps.Marker({
                         position: data,
@@ -113,6 +128,7 @@
                         icon: '../Assets/satan.jpg',
                         label: data.name,
                     });
+                    markers.push(marker);
                 }
 
                 // Requests entries older than expiry time (10 minutes).
@@ -164,6 +180,7 @@
                     icon: '../Assets/soccer.png',
                     label: data.name,
                 });
+                markers.push(marker);
             } else if (data.name == "basketball") {
                 var marker = new google.maps.Marker({
                     position: data,
@@ -171,6 +188,7 @@
                     icon: '../Assets/basketball.png',
                     label: data.name,
                 });
+                markers.push(marker);
             } else if (data.name == "football") {
                 var marker = new google.maps.Marker({
                     position: data,
@@ -178,6 +196,7 @@
                     icon: '../Assets/football.png',
                     label: data.name,
                 });
+                markers.push(marker);
             } else if (data.name == "frisbee") {
                 var marker = new google.maps.Marker({
                     position: data,
@@ -185,6 +204,7 @@
                     icon: '../Assets/frisbee.png',
                     label: data.name,
                 });
+                markers.push(marker);
             } else {
                 var marker = new google.maps.Marker({
                     position: data,
@@ -192,6 +212,7 @@
                     icon: '../Assets/satan.jpg',
                     label: data.name,
                 });
+                markers.push(marker);
             }
         });
 
@@ -239,6 +260,18 @@
             });
         });
     }
+
+    filterMarkers = function (category) {
+        for (i = 0; i < markers.length; i++) {
+            marker = markers[i];
+            if (marker.label == category || category == "all") {
+                marker.setVisible(true);
+            } else {
+                marker.setVisible(false);
+            }
+        }
+    }
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8sf09YBo8p73yk5SI93Es34KRoossAhg&libraries=visualization&callback=initMap">
