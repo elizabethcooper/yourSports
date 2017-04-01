@@ -62,6 +62,40 @@
           streetViewControl: false,
         });
 
+
+
+          // 10 minutes before current time.
+          var startTime = new Date().getTime() - (60 * 10 * 1000);
+
+          // Reference to the clicks in Firebase.
+          var clicks = firebase.child('clicks');
+
+          // Listener for when a click is added.
+          clicks.orderByChild('timestamp').startAt(startTime).on('child_added',
+              function(snapshot) {
+
+                  // Get that click from firebase.
+                  var newPosition = snapshot.val();
+                  var point = new google.maps.LatLng(newPosition.lat, newPosition.lng);
+                  var elapsed = new Date().getTime() - newPosition.timestamp;
+
+                  // Add the point to  the heatmap.
+                  var marker = new google.maps.Marker({
+                      position: point,
+                      map: map,
+                      label: newPosition.name
+                  });
+
+                  // Requests entries older than expiry time (10 minutes).
+                  var expirySeconds = Math.max(60 * 10 * 1000 - elapsed, 0);
+                  // Set client timeout to remove the point after a certain time.
+                  window.setTimeout(function() {
+                      // Delete the old point from the database.
+                      snapshot.ref().remove();
+                  }, expirySeconds);
+              }
+          );
+
         
 
         if (navigator.geolocation) {
@@ -92,10 +126,12 @@
         map.addListener('click', function(e) {
           data.lat = e.latLng.lat();
           data.lng = e.latLng.lng();
+          data.name = prompt('Enter name of activity:');
           addToFirebase(data);
-          var marker = new google.maps.Marker({
+            var marker = new google.maps.Marker({
               position: data,
               map: map,
+                label: data.name,
             });
         });
 
@@ -124,7 +160,7 @@
             var elapsed = new Date().getTime() - newPosition.timestamp;
 
             // Add the point to  the heatmap.
-            heatmap.getData().push(point);
+
 
             // Requests entries older than expiry time (10 minutes).
             var expirySeconds = Math.max(60 * 100 * 1000 - elapsed, 0);
