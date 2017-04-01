@@ -171,7 +171,11 @@
         map.addListener('click', function(e) {
             data.lat = e.latLng.lat();
             data.lng = e.latLng.lng();
-            data.name = prompt('Enter name of activity:');
+            var promptName = prompt('Enter name of activity:');
+            if (promptName == null) {
+                return
+            }
+            data.name = promptName;
             addToFirebase(data);
             if (data.name == "soccer") {
                 var marker = new google.maps.Marker({
