@@ -173,7 +173,7 @@
             data.lng = e.latLng.lng();
             var promptName = prompt('Enter name of activity:');
             if (promptName == null) {
-                return
+                return;
             }
             data.name = promptName;
             addToFirebase(data);
