@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    /* Always set the map height explicitly to define the size of the div
-     * element that contains the map. */
-    #map {
-      height: 100%;
-    }
-    /* Optional: Makes the sample page fill the window. */
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  </style>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 <div id="map"></div>
@@ -63,28 +63,57 @@
         });
 
 
-        
+
         // 10 minutes before current time.
         var startTime = new Date().getTime() - (60 * 10 * 1000);
 
-        // Reference to the clicks in Firebase.
         var clicks = firebase.child('clicks');
-
         // Listener for when a click is added.
         clicks.orderByChild('timestamp').startAt(startTime).on('child_added',
             function(snapshot) {
 
                 // Get that click from firebase.
-                var newPosition = snapshot.val();
-                var point = new google.maps.LatLng(newPosition.lat, newPosition.lng);
-                var elapsed = new Date().getTime() - newPosition.timestamp;
+                var data = snapshot.val();
+                var point = new google.maps.LatLng(data.lat, data.lng);
+                var elapsed = new Date().getTime() - data.timestamp;
 
                 // Add the point to  the heatmap.
-                var marker = new google.maps.Marker({
-                    position: point,
-                    map: map,
-                    label: newPosition.name
-                });
+                if (data.name == "soccer") {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: 'soccer.png',
+                        label: data.name,
+                    });
+                } else if (data.name == "basketball") {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: 'basketball.png',
+                        label: data.name,
+                    });
+                } else if (data.name == "football") {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: 'football.png',
+                        label: data.name,
+                    });
+                } else if (data.name == "frisbee") {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: 'frisbee.png',
+                        label: data.name,
+                    });
+                } else {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: 'satan.jpg',
+                        label: data.name,
+                    });
+                }
 
                 // Requests entries older than expiry time (10 minutes).
                 var expirySeconds = Math.max(60 * 10 * 1000 - elapsed, 0);
@@ -128,11 +157,42 @@
             data.lng = e.latLng.lng();
             data.name = prompt('Enter name of activity:');
             addToFirebase(data);
-            var marker = new google.maps.Marker({
-                position: data,
-                map: map,
-                label: data.name,
-            });
+            if (data.name == "soccer") {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'soccer.png',
+                    label: data.name,
+                });
+            } else if (data.name == "basketball") {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'basketball.png',
+                    label: data.name,
+                });
+            } else if (data.name == "football") {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'football.png',
+                    label: data.name,
+                });
+            } else if (data.name == "frisbee") {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'frisbee.png',
+                    label: data.name,
+                });
+            } else {
+                var marker = new google.maps.Marker({
+                    position: data,
+                    map: map,
+                    icon: 'satan.jpg',
+                    label: data.name,
+                });
+            }
         });
 
     }
