@@ -89,44 +89,26 @@
                 var elapsed = new Date().getTime() - data.timestamp;
 
                 // Add the point to  the heatmap.
-                if (data.name == "soccer") {
-                    var marker = new google.maps.Marker({
-                        position: data,
-                        map: map,
-                        icon: '../Assets/soccer.png',
-                        label: data.name,
-                    });
-                    markers.push(marker);
-                } else if (data.name == "basketball") {
-                    var marker = new google.maps.Marker({
-                        position: data,
-                        map: map,
-                        icon: '../Assets/basketball.png',
-                        label: data.name,
-                    });
-                    markers.push(marker);
-                } else if (data.name == "football") {
-                    var marker = new google.maps.Marker({
-                        position: data,
-                        map: map,
-                        icon: '../Assets/football.png',
-                        label: data.name,
-                    });
-                    markers.push(marker);
-                } else if (data.name == "frisbee") {
-                    var marker = new google.maps.Marker({
-                        position: data,
-                        map: map,
-                        icon: '../Assets/frisbee.png',
-                        label: data.name,
-                    });
-                    markers.push(marker);
-                } else {
+                var pushed = false;
+                for (var i = 0; i < activityList.length; i++) {
+                    if (data.name === activityList[i]) {
+                        var marker = new google.maps.Marker({
+                            position: data,
+                            map: map,
+                            icon: "../Assets/" + data.name + ".png",
+                            label: data.name
+                        });
+                        markers.push(marker);
+                        pushed = true;
+                    }
+                }
+
+                if (pushed === false) {
                     var marker = new google.maps.Marker({
                         position: data,
                         map: map,
                         icon: '../Assets/satan.jpg',
-                        label: data.name,
+                        label: data.name
                     });
                     markers.push(marker);
                 }
@@ -177,44 +159,26 @@
             }
             data.name = promptName;
             addToFirebase(data);
-            if (data.name == "soccer") {
-                var marker = new google.maps.Marker({
-                    position: data,
-                    map: map,
-                    icon: '../Assets/soccer.png',
-                    label: data.name,
-                });
-                markers.push(marker);
-            } else if (data.name == "basketball") {
-                var marker = new google.maps.Marker({
-                    position: data,
-                    map: map,
-                    icon: '../Assets/basketball.png',
-                    label: data.name,
-                });
-                markers.push(marker);
-            } else if (data.name == "football") {
-                var marker = new google.maps.Marker({
-                    position: data,
-                    map: map,
-                    icon: '../Assets/football.png',
-                    label: data.name,
-                });
-                markers.push(marker);
-            } else if (data.name == "frisbee") {
-                var marker = new google.maps.Marker({
-                    position: data,
-                    map: map,
-                    icon: '../Assets/frisbee.png',
-                    label: data.name,
-                });
-                markers.push(marker);
-            } else {
+            var pushed = false;
+            for (var i = 0; i < activityList.length; i++) {
+                if (data.name === activityList[i]) {
+                    var marker = new google.maps.Marker({
+                        position: data,
+                        map: map,
+                        icon: "../Assets/" + data.name + ".png",
+                        label: data.name
+                    });
+                    markers.push(marker);
+                    pushed = true;
+                }
+            }
+
+            if (pushed === false) {
                 var marker = new google.maps.Marker({
                     position: data,
                     map: map,
                     icon: '../Assets/satan.jpg',
-                    label: data.name,
+                    label: data.name
                 });
                 markers.push(marker);
             }
